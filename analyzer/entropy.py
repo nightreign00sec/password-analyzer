@@ -19,20 +19,20 @@ else:
     print(f'The length is: {len(password)} and it does not have all character types. It is weak and can be easily cracked')
 
 """
-  Using the shannon entropy formula, we can calculate the entropy of a password based on its length and character set. The formula is: E = L * log2(N), where E is the entropy, L is the length of the password, and N is the number of possible characters in the character set. The character set can include uppercase letters, lowercase letters, digits, and symbols. The more diverse the character set and the longer the password, the higher the entropy and the stronger the password.
+  Using the shannon entropy formula, we can calculate the entropy of a password based on its length and character set. which is H = -sum(p(x) * log2(p(x))) for each unique character x in the password, where p(x) is the probability of character x occurring in the password. The more diverse the character set and the longer the password, the higher the entropy and the stronger the password.
 """
 
-def shannon_entropy(password):
+def shannon_entropy(password: str) -> float:
     length = len(password)
-    char_set_size = 0
-    if has_uppercase:
-        char_set_size += 26
-    if has_lowercase:
-        char_set_size += 26
-    if has_digit:
-        char_set_size += 10
-    if has_symbols:
-        char_set_size += 32 #"Assumming that the most common symbols are 32 in total
+    if length == 0:
+        entropy = 0.0
+    #count the freq of each character
+    counts = Counter(password)
 
-        entropy = len(password) * math.log2(char_set_size)
-        return entropy
+    #shannon entropy formula H = -sum(p(x) * log2(p(x))) for each unique character x in the password, where p(x) is the probability of character x occurring in the password.
+    entropy = -sum((count / length) * math.log2(count / length) for count in counts.values())
+    return entropy
+
+
+print(f'The shannon entropy of the password is : {shannon_entropy(password)} bits')
+
